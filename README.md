@@ -13,7 +13,7 @@ The script supports both encoding and decoding configurations:
 **Decoding:**
 
 ```bash
-python amnezia-config-decoder.py "vpn://AAAGX.." [-o output.json]
+python amnezia-config-decoder.py vpn://AAAGX.. [-o output.json]
 ```
 
 * `vpn://AAAGX..`: The Base64-encoded string containing the AmneziaVPN configuration.

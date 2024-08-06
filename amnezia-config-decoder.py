@@ -27,17 +27,22 @@ def decode_config(encoded_string):
     encoded_data += "=" * padding
     compressed_data = base64.urlsafe_b64decode(encoded_data)
 
-    # Read the original data length from the first 4 bytes of the header
-    original_data_len = int.from_bytes(compressed_data[:4], byteorder='big')
+    # Try to decompress the data assuming it's zlib compressed
+    try:
+        # Read the original data length from the first 4 bytes of the header
+        original_data_len = int.from_bytes(compressed_data[:4], byteorder='big')
 
-    # Decompress the data starting from the 5th byte (after the header)
-    decompressed_data = zlib.decompress(compressed_data[4:])
+        # Decompress the data starting from the 5th byte (after the header)
+        decompressed_data = zlib.decompress(compressed_data[4:])
 
-    if len(decompressed_data) != original_data_len:
-        raise ValueError("Invalid length of decompressed data")
+        if len(decompressed_data) != original_data_len:
+            raise ValueError("Invalid length of decompressed data")
 
-    # Use json.loads with object_pairs_hook=OrderedDict to preserve key order in the JSON
-    return json.loads(decompressed_data, object_pairs_hook=collections.OrderedDict) 
+        # Use json.loads with object_pairs_hook=OrderedDict to preserve key order in the JSON
+        return json.loads(decompressed_data, object_pairs_hook=collections.OrderedDict)
+    except zlib.error:
+        # If decompression fails, assume the data is just base64 encoded JSON
+        return json.loads(compressed_data.decode(), object_pairs_hook=collections.OrderedDict)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

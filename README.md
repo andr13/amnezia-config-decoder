@@ -49,7 +49,7 @@ python amnezia-config-decoder.py -i config.json
 
 ## Background
 
-AmneziaVPN uses a custom string encoding scheme to represent configurations. This script replicates the AmneziaVPN application encoding and decoding logic **without using Qt**, allowing you to work with configs in a much readable JSON format.
+AmneziaVPN uses a custom string encoding scheme to represent configurations. This script replicates encoding and decoding logic **without using Qt**, allowing you to work with configs in a much readable JSON format.
 
 ## Contributing
 
